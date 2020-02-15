@@ -1,17 +1,23 @@
 #! /usr/bin/env python3
 # coding: utf-8
+import argparse
 
-import analysis.xml as x_an
 import analysis.csv as c_an
+import analysis.xml as x_an
 
-import os
-
-def launch_analysis(data_file):
-    directory = os.path.dirname(os.path.dirname(__file__)) # we get the right path.
+def parse_arguments():
+    parser = argparse.ArgumentParser()
+    parser.add_argument("-e", "--extension", help="""Type of file to analyse. Is it a CSV or an XML?""")
+    parser.add_argument("-d","--datafile",help="""CSV file containing pieces of information about the members of parliament""")
+    return parser.parse_args()
 
 def main():
-    c_an.launch_analysis('current_mps.csv')
-    x_an.launch_analysis('SyceronBrut.xml')
+    args = parse_arguments()
+    datafile = args.datafile
+    if args.extension == 'xml':
+        x_an.launch_analysis(datafile)
+    elif args.extension == 'csv':
+        c_an.launch_analysis(datafile)
 
 if __name__ == "__main__":
     main()
